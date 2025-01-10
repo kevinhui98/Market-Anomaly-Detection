@@ -27,7 +27,7 @@ Bias Avoidance and Precision:
 Avoid false positives by ensuring the anomaly is significant and not attributable to regular market fluctuations.
 Communicate results clearly, including uncertainty levels and supporting evidence for predictions.
 Provide detailed explanations of anomalies detected, their potential implications, and steps stakeholders can take to mitigate risks. Always ensure accuracy, clarity, and timeliness.
-
+explain the investment strategy to end users, making it accessible and actionable
 
 let's think step by step about this. Verify step by step.
 ```
