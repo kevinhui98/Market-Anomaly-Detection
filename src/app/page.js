@@ -1,5 +1,8 @@
 import Image from "next/image";
-
+// pick a stock then allow pick logistic regression, neural network or other model to predict the stock price
+// then show the graph of the stock price and the predicted stock price
+// then show the accuracy of the model
+// then show an explanation of the model
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
