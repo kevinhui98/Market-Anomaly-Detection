@@ -1,6 +1,14 @@
 "use client"
-import { Box, FormGroup, Stack, FormControlLabel, Checkbox } from "@mui/material";
+import { Box, FormGroup, Stack, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import Image from "next/image";
+import { useState } from "react";
+import TextField from "@mui/material/TextField";
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
 // pick a stock then allow pick logistic regression, neural network or other model to predict the stock price
 // then show the graph of the stock price and the predicted stock price
 // then show the accuracy of the model
@@ -50,42 +58,64 @@ export default function Home() {
     { "Name": "MSCI INDIA", "Currency": "INR", "Bloomberg Ticker": "MXIN" },
     { "Name": "MSCI CHINA", "Currency": "HKD", "Bloomberg Ticker": "MXCN" }
   ]
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredFeatures = features.filter((feature) =>
+    feature.Name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="grid items-center justify-items-center p-5 pb-10 max-h-full font-[family-name:var(--font-geist-sans)]">
-      <nav className="row-start-1 flex items-center justify-between w-full py-5 pb-10" >
-        <h1>
-          Anomaly Detection
-        </h1>
-      </nav>
-      <Stack direction="col" spacing={4} gap={10} width={'100%'}>
-        <Stack height={'600px'} overflow={'auto'} pl={10}>
-          <FormGroup direction="row" overflow={'auto'} className="flex flex-wrap gap-4">
-            {features.map((feature, index) => (
-              <FormControlLabel
-                key={index}
-                className="p-2 m-2 gap-5 border rounded hover:bg-gray-200 hover:text-black"
-                onClick={() => console.log(`Clicked on ${feature.Name}`)}
-                control={<Checkbox className="bg-gray-200" />}
-                label={feature.Name}
-              />
-            ))}
-          </FormGroup>
-        </Stack>
-        <Stack direction="column" gap={4} width={'60%'}>
-          <h2 className="text-xl font-bold">Model Prediction</h2>
-          <Box className="mt-4">
+      <Stack display="flex" direction="row" justifyContent="space-between" width={"100%"} px={15} mb={10}>
+        <Typography variant="h3">Anomaly Detection</Typography>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </Box>
+      </Stack>
+      <Stack direction="row" spacing={4} width={'100%'} mb={10}>
+        <Box pl={15} >
+          <TextField
+            label="Search Features"
+            variant="outlined"
+            fullWidth
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
+            className="bg-white border rounded"
+          />
+          <Stack height={'60vh'} overflow={'auto'} width={'30vw'} mt={2}>
+            <FormGroup direction="row" className="flex flex-wrap gap-2"  >
+              {filteredFeatures.map((feature, index) => (
+                <FormControlLabel
+                  key={index}
+                  className="border rounded bg-gray-200 text-black"
+                  onClick={() => console.log(`Clicked on ${feature.Name}`)}
+                  control={<Checkbox className="bg-gray-200" />}
+                  sx={{ mx: 0, mr: 1 }}
+                  label={feature.Name}
+                />
+              ))}
+            </FormGroup>
+          </Stack>
+        </Box>
+        <Stack direction="column" gap={4} width={'50vw'} display={'flex'} justifyContent="flex-start">
+          <Typography variant="h4">Model Prediction</Typography>
+          <Box mt={2}>
             {/* Placeholder for the graph */}
-            <Box className="h-64 bg-gray-100 flex items-center justify-center">
+            <Box className="bg-gray-900 flex items-center justify-center" height={"40vh"}>
               <span>Graph will be displayed here</span>
             </Box>
           </Box>
-          <Box className="mt-4">
-            <h3 className="text-lg font-semibold">Model Accuracy</h3>
-            <p>Accuracy details will be displayed here</p>
+          <Box mt={2}>
+            <Typography variant="h5">Model Accuracy</Typography>
+            <Typography variant="body1">Accuracy details will be displayed here</Typography>
           </Box>
-          <Box className="mt-4">
-            <h3 className="text-lg font-semibold">Model Explanation</h3>
-            <p>Explanation of the model will be displayed here</p>
+          <Box mt={2}>
+            <Typography variant="h5" >Model Explanation</Typography>
+            <Typography variant="body1">Explanation of the model will be displayed here</Typography>
           </Box>
         </Stack>
       </Stack>
