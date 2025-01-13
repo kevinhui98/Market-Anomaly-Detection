@@ -1,8 +1,8 @@
 "use client"
-import { Box, FormGroup, Stack, FormControlLabel, Checkbox, Typography } from "@mui/material";
-import Image from "next/image";
+import { Box, FormGroup, Stack, FormControlLabel, Checkbox, Typography, Button, Divider } from "@mui/material";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
+import GitHubIcon from '@mui/icons-material/GitHub';
 import {
   SignInButton,
   SignedIn,
@@ -64,8 +64,8 @@ export default function Home() {
   );
 
   return (
-    <div className="grid items-center justify-items-center p-5 pb-10 max-h-full font-[family-name:var(--font-geist-sans)]">
-      <Stack display="flex" direction="row" justifyContent="space-between" width={"100%"} px={15} mb={10}>
+    <Box className="grid items-center justify-items-center p-5 pb-10 max-h-full font-[family-name:var(--font-geist-sans)]">
+      <Stack display="flex" direction="row" justifyContent="space-between" width={"100%"} px={15} mb={10} mt={5}>
         <Typography variant="h3">Anomaly Detection</Typography>
         <Box display="flex" justifyContent="center" alignItems="center">
           <SignedOut>
@@ -78,14 +78,17 @@ export default function Home() {
       </Stack>
       <Stack direction="row" spacing={4} width={'100%'} mb={10}>
         <Box pl={15} >
-          <TextField
-            label="Search Features"
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setSearchTerm(e.target.value)}
-            value={searchTerm}
-            className="bg-white border rounded"
-          />
+          <Stack display={'flex'} flexDirection={'row'} gap={1}>
+            <TextField
+              label="Search Features"
+              variant="outlined"
+              fullWidth
+              onChange={(e) => setSearchTerm(e.target.value)}
+              value={searchTerm}
+              className="bg-white border rounded"
+            />
+            <Button variant="contained" color="primary">Predict</Button>
+          </Stack>
           <Stack height={'60vh'} overflow={'auto'} width={'30vw'} mt={2}>
             <FormGroup direction="row" className="flex flex-wrap gap-2"  >
               {filteredFeatures.map((feature, index) => (
@@ -119,53 +122,17 @@ export default function Home() {
           </Box>
         </Stack>
       </Stack>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div >
+      <Divider orientation="horizontal" />
+      <Box display="flex" justifyContent="flex-end" alignItems="flex-end" sx={{ float: 'right' }} width={"100%"} px={15}>
+        <Button
+          sx={{ right: 10, bottom: 0 }}
+          variant="contained"
+          color="primary"
+          startIcon={<GitHubIcon />}
+          href="https://github.com/kevinhui98/Market-Anomaly-Detection"
+        > GitHub
+        </Button>
+      </Box>
+    </Box>
   );
 }
