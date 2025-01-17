@@ -31,7 +31,7 @@ explain the investment strategy to end users, making it accessible and actionabl
 
 let's think step by step about this. Verify step by step.
 ```
-const explain_prediction = (probability, input_dict, stock) => {
+async function explain_prediction(client, probability, input_dict, stock) {
     const prompt = `You are a financial market anomaly detection system designed to identify potential early warning signals for impending financial market crashes. Your goal is to analyze stock market data, detect unusual patterns, and provide actionable insights into potential anomalies. Focus on the following:
 
     You machine learning model has predicted that a stock name ${stock} has a ${Math.round(probability * 100, 1)}% probability of being an anomaly, based on the information provided below. 
@@ -89,7 +89,14 @@ const explain_prediction = (probability, input_dict, stock) => {
 
     `
     console.log("Explaination prompt", prompt)
-    return prompt
+    raw_response = await client.completions.create({
+        model: "llama-3.2-3b-preview",
+        messages: [
+            { "role": "user", "content": promt }
+        ],
+        stream: true,
+    })
+    return raw_response.choices[0].delta.content
 }
 
 export async function POST(req) {
@@ -98,14 +105,15 @@ export async function POST(req) {
         baseURL: "https://api.groq.com/openai/v1"
     });
     const data = await req.text()
-    const completion = await client.chat.completions.create({
-        model: "llama-3.1-70b-versatile",
-        messages: [
-            { "role": "system", "content": systemPrompt },
-            { "role": "user", "content": data }
-        ],
-        stream: true,
-    })
+    // const completion = await client.chat.completions.create({
+    //     model: "llama-3.2-3b-preview",
+    //     messages: [
+    //         { "role": "system", "content": systemPrompt },
+    //         { "role": "user", "content": data }
+    //     ],
+    //     stream: true,
+    // })
+    await explain_prediction(client, 0.8, data, "AAPL")
     const stream = new ReadableStream({
         async start(controller) {
             const encoder = new TextEncoder();
