@@ -31,6 +31,66 @@ explain the investment strategy to end users, making it accessible and actionabl
 
 let's think step by step about this. Verify step by step.
 ```
+const explain_prediction = (probability, input_dict, stock) => {
+    const prompt = `You are a financial market anomaly detection system designed to identify potential early warning signals for impending financial market crashes. Your goal is to analyze stock market data, detect unusual patterns, and provide actionable insights into potential anomalies. Focus on the following:
+
+    You machine learning model has predicted that a stock name ${stock} has a ${Math.round(probability * 100, 1)}% probability of being an anomaly, based on the information provided below. 
+
+    Here is the market's information:
+    ${input_dict}
+
+    Top Features correlations with target
+    Feature     | Importance
+    -------------------------------------
+    Y           |  1.000000
+    VIX         |  0.598432
+    GTITL2YR    |  0.304528
+    GTITL10YR   |  0.297573
+    GTITL30YR   |  0.295000
+    EONIA       |  0.180311
+    GTDEM30Y    |  0.141537
+    GTDEM10Y    |  0.139933
+    GTJPY10YR   |  0.133660
+    GTDEM2Y     |  0.130607
+    GTJPY30YR   |  0.114555
+    GTJPY2YR    |  0.112314
+    DXY         |  0.103227
+    GTGBP20Y    |  0.100142
+    GTGBP30Y    |  0.099777
+    GTGBP2Y     |  0.035010
+    USGG30YR    |  0.019255
+    US0001M     |  0.015379
+    GT10        | -0.004776
+    XAU BGNL    | -0.011535
+    USGG3M      | -0.025935
+    USGG2YR     | -0.034909
+    MXBR        | -0.043429
+    Cl1         | -0.070141
+    CRY         | -0.074102
+    BDIY        | -0.083440
+    ECSURPUS    | -0.090772
+    GBP         | -0.093201
+    LUMSTRUU    | -0.104897
+    LMBITR      | -0.143607
+    MXRU        | -0.148848
+    MXCN        | -0.149581
+    JPY         | -0.151197
+    LUACTRUU    | -0.153544
+    LF94TRUU    | -0.156550
+    EMUSTRUU    | -0.169475
+    MXIN        | -0.188942
+    LF98TRUU    | -0.189661
+    MXUS        | -0.193928
+    LG30TRUU    | -0.197232
+    LP01TREU    | -0.209774
+    MXEU        | -0.253877
+    MXJP        | -0.279399
+
+
+    `
+    console.log("Explaination prompt", prompt)
+    return prompt
+}
 
 export async function POST(req) {
     const client = new OpenAI({
@@ -64,10 +124,5 @@ export async function POST(req) {
             }
         }
     });
-    return new Response(stream, {
-        headers: {
-            "Content-Type": "text/plain",
-            "Cache-Control": "no-store"
-        }
-    });
+    return new NextResponse(stream)
 }
